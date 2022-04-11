@@ -46,7 +46,7 @@ class RpiQuestionGenerator
                     $block_atts = array(
                         'id' => $block_id,
                         'title' => $post->post_title,
-                        'icon' => $fields['block_icon'],
+                        'icon' => $this->clean_up_svg($fields['block_icon']),
                         'keywords' => array(),
                         'slug' => 'lazyblock/' . $post->post_name,
                         'description' => '',
@@ -125,6 +125,29 @@ class RpiQuestionGenerator
             }
         }
 
+    }
+
+    /**
+     * @param $svg
+     * @return mixed
+     */
+    public function clean_up_svg($svg){
+
+        BUGFU::log($svg);
+            $re = '#height="\d*"#m';
+            $svg = preg_replace($re, 'height="24"', $svg);
+
+        BUGFU::log($svg);
+            $re = '#width="\d*"#m';
+            $svg = preg_replace($re, 'width="24"', $svg);
+
+        BUGFU::log($svg);
+        $re = '/(.*\W*?)(<svg)/m';
+
+        $svg = preg_replace($re, '$2', $svg);
+
+        BUGFU::log($svg);
+        return $svg;
     }
 
     public function register_acf_field_group()
