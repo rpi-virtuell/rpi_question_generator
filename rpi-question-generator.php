@@ -12,6 +12,10 @@ License: A "Slug" license name e.g. GPL2
 
 class RpiQuestionGenerator
 {
+    /**
+     * @var mixed
+     */
+    private $svg;
 
     /**
      * Plugin constructor
@@ -43,10 +47,11 @@ class RpiQuestionGenerator
             if ($fields) {
                 if (function_exists('lazyblocks')) :
                     $block_id = random_int(10, 99999999);
+                    $this->svg = $fields['block_icon'];
                     $block_atts = array(
                         'id' => $block_id,
                         'title' => $post->post_title,
-                        'icon' => $this->clean_up_svg($fields['block_icon']),
+                        'icon' => $this->clean_up_svg($this->svg),
                         'keywords' => array(),
                         'slug' => 'lazyblock/' . $post->post_name,
                         'description' => '',
@@ -112,7 +117,7 @@ class RpiQuestionGenerator
                             'editor_callback' => '',
                             'editor_css' => '',
                             'frontend_html' => '',
-                            'frontend_callback' => '',
+                            'frontend_callback' => array($this, 'frontend_callback'),
                             'frontend_css' => '',
                             'show_preview' => 'always',
                             'single_output' => false,
@@ -127,27 +132,31 @@ class RpiQuestionGenerator
 
     }
 
+    public function frontend_callback($p)
+    {
+        file_get_contents(plugin_dir_path(__FILE__) . '/template');
+        echo "<h3>" . $this->clean_up_svg($this->svg, 48, 48) . ' ' . $p['title'] . "</h3>";
+        echo $p['insertedblocks'];
+
+    }
+
     /**
      * @param $svg
      * @return mixed
      */
-    public function clean_up_svg($svg){
+    public function clean_up_svg($svg, $height = 24, $width = 24)
+    {
 
-        BUGFU::log($svg);
-            $re = '#height="\d*"#m';
-            $svg = preg_replace($re, 'height="24"', $svg);
+        $re = '#height="\d*"#m';
+        $svg = preg_replace($re, 'height="' . $height . '"', $svg);
 
-        BUGFU::log($svg);
-            $re = '#width="\d*"#m';
-            $svg = preg_replace($re, 'width="24"', $svg);
+        $re = '#width="\d*"#m';
+        $svg = preg_replace($re, 'width="' . $width . '"', $svg);
 
-        BUGFU::log($svg);
         $re = '/(.*\W*?)(<svg)/m';
 
-        $svg = preg_replace($re, '$2', $svg);
+        return preg_replace($re, '$2', $svg);
 
-        BUGFU::log($svg);
-        return $svg;
     }
 
     public function register_acf_field_group()
