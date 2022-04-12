@@ -32,133 +32,6 @@ class RpiQuestionGenerator
         add_action('init', array($this, 'create_blocks'));
     }
 
-    public function create_blocks()
-    {
-
-        $posts = get_posts(array('posts_per_page' => -1,
-            'post_type' => 'leitfragenblocks',
-            'orderby' => 'menu_order',
-            'order' => 'ASC',
-            'suppress_filters' => true, // DO NOT allow WPML to modify the query
-            'post_status' => 'publish',
-            'update_post_meta_cache' => false));
-        foreach ($posts as $post) {
-            $fields = get_fields($post->ID);
-            if ($fields) {
-                if (function_exists('lazyblocks')) :
-                    $block_id = random_int(10, 99999999);
-                    $this->svg = $fields['block_icon'];
-                    $block_atts = array(
-                        'id' => $block_id,
-                        'title' => $post->post_title,
-                        'icon' => $this->clean_up_svg($this->svg),
-                        'keywords' => array(),
-                        'slug' => 'lazyblock/' . $post->post_name,
-                        'description' => '',
-                        'category' => 'text',
-                        'category_label' => 'text',
-                        'supports' => array(
-                            'customClassName' => true,
-                            'anchor' => false,
-                            'align' => array(
-                                0 => 'wide',
-                                1 => 'full',
-                            ),
-                            'html' => false,
-                            'multiple' => true,
-                            'inserter' => true,
-                        ),
-                        'ghostkit' => array(
-                            'supports' => array(
-                                'spacings' => false,
-                                'display' => false,
-                                'scrollReveal' => false,
-                                'frame' => false,
-                                'customCSS' => false,
-                            ),
-                        ),
-                        'controls' => array(
-                            'control_' . $block_id . 'a' => array(
-                                'type' => 'text',
-                                'name' => 'title',
-                                'default' => $post->post_title,
-                                'label' => 'Überschrift',
-                                'help' => 'Wird als Überschrift dieses Absatzes angezeigt Mehr Hilfe',
-                                'child_of' => '',
-                                'placement' => 'content',
-                                'width' => '100',
-                                'hide_if_not_selected' => 'false',
-                                'save_in_meta' => 'false',
-                                'save_in_meta_name' => '',
-                                'required' => 'true',
-                                'placeholder' => '',
-                                'characters_limit' => '',
-                            ),
-                            'control_' . $block_id . 'b' => array(
-                                'type' => 'inner_blocks',
-                                'name' => 'insertedblocks',
-                                'default' => '',
-                                'label' => $fields['leitfrage'],
-                                'help' => '',
-                                'child_of' => '',
-                                'placement' => 'content',
-                                'width' => '100',
-                                'hide_if_not_selected' => 'false',
-                                'save_in_meta' => 'false',
-                                'save_in_meta_name' => '',
-                                'required' => 'false',
-                                'placeholder' => '',
-                                'characters_limit' => '',
-                            ),
-                        ),
-                        'code' => array(
-                            'output_method' => 'php',
-                            'editor_html' => '',
-                            'editor_callback' => '',
-                            'editor_css' => '',
-                            'frontend_html' => '',
-                            'frontend_callback' => array($this, 'frontend_callback'),
-                            'frontend_css' => '',
-                            'show_preview' => 'always',
-                            'single_output' => false,
-                        ),
-                        'condition' => array(),
-                    );
-
-                    lazyblocks()->add_block($block_atts);
-                endif;
-            }
-        }
-
-    }
-
-    public function frontend_callback($p)
-    {
-        file_get_contents(plugin_dir_path(__FILE__) . '/template');
-        echo "<h3>" . $this->clean_up_svg($this->svg, 48, 48) . ' ' . $p['title'] . "</h3>";
-        echo $p['insertedblocks'];
-
-    }
-
-    /**
-     * @param $svg
-     * @return mixed
-     */
-    public function clean_up_svg($svg, $height = 24, $width = 24)
-    {
-
-        $re = '#height="\d*"#m';
-        $svg = preg_replace($re, 'height="' . $height . '"', $svg);
-
-        $re = '#width="\d*"#m';
-        $svg = preg_replace($re, 'width="' . $width . '"', $svg);
-
-        $re = '/(.*\W*?)(<svg)/m';
-
-        return preg_replace($re, '$2', $svg);
-
-    }
-
     public function register_acf_field_group()
     {
         if (function_exists('acf_add_local_field_group')):
@@ -193,15 +66,15 @@ class RpiQuestionGenerator
                         'name' => 'block_icon',
                         'type' => 'textarea',
                         'instructions' => '',
-                        'required' => 1,
+                        'required' => 0,
                         'conditional_logic' => 0,
                         'wrapper' => array(
                             'width' => '',
                             'class' => '',
                             'id' => '',
                         ),
-                        'default_value' => file_get_contents(plugin_dir_path(__FILE__) . '/assets/029-query.svg'),
-                        'placeholder' => '',
+                        'default_value' => '',
+                        'placeholder' => file_get_contents(plugin_dir_path(__FILE__) . '/assets/029-query.svg'),
                         'mode' => 'text/html',
                         'lines' => 1,
                         'indent_unit' => 4,
@@ -292,6 +165,168 @@ class RpiQuestionGenerator
         ];
 
         register_post_type("leitfragenblocks", $args);
+    }
+
+    public function create_blocks()
+    {
+        $posts = get_posts(array('posts_per_page' => -1,
+            'post_type' => 'leitfragenblocks',
+            'orderby' => 'menu_order',
+            'order' => 'ASC',
+            'suppress_filters' => true, // DO NOT allow WPML to modify the query
+            'post_status' => 'publish',
+            'update_post_meta_cache' => false));
+        foreach ($posts as $post) {
+            $fields = get_fields($post->ID);
+
+            if ($fields) {
+                if (function_exists('lazyblocks')) :
+                    $block_id = random_int(10, 99999999);
+
+                    if (!empty($fields['block_icon'] && strstr($fields['block_icon'], '<svg') && strstr($fields['block_icon'], '</svg'))) {
+                        $this->svg = $fields['block_icon'];
+                    } else {
+                        $this->svg = file_get_contents(plugin_dir_path(__FILE__) . '/assets/029-query.svg');
+                    }
+
+                    $block_atts = array(
+                        'id' => $block_id,
+                        'title' => $post->post_title,
+                        'icon' => $this->clean_up_svg($this->svg),
+                        'keywords' => array(),
+                        'slug' => 'lazyblock/' . $post->post_name,
+                        'description' => '',
+                        'category' => 'text',
+                        'category_label' => 'text',
+                        'supports' => array(
+                            'customClassName' => true,
+                            'anchor' => false,
+                            'align' => array(
+                                0 => 'wide',
+                                1 => 'full',
+                            ),
+                            'html' => false,
+                            'multiple' => true,
+                            'inserter' => true,
+                        ),
+                        'ghostkit' => array(
+                            'supports' => array(
+                                'spacings' => false,
+                                'display' => false,
+                                'scrollReveal' => false,
+                                'frame' => false,
+                                'customCSS' => false,
+                            ),
+                        ),
+                        'controls' => array(
+                            'control_' . $block_id . 'a' => array(
+                                'type' => 'text',
+                                'name' => 'title',
+                                'default' => $post->post_title,
+                                'label' => 'Überschrift',
+                                'help' => 'Wird als Überschrift dieses Absatzes angezeigt Mehr Hilfe',
+                                'child_of' => '',
+                                'placement' => 'content',
+                                'width' => '100',
+                                'hide_if_not_selected' => 'false',
+                                'save_in_meta' => 'false',
+                                'save_in_meta_name' => '',
+                                'required' => 'true',
+                                'placeholder' => '',
+                                'characters_limit' => '',
+                            ),
+                            'control_' . $block_id . 'b' => array(
+                                'type' => 'inner_blocks',
+                                'name' => 'insertedblocks',
+                                'default' => '',
+                                'label' => $fields['leitfrage'],
+                                'help' => '',
+                                'child_of' => '',
+                                'placement' => 'content',
+                                'width' => '100',
+                                'hide_if_not_selected' => 'false',
+                                'save_in_meta' => 'false',
+                                'save_in_meta_name' => '',
+                                'required' => 'false',
+                                'placeholder' => '',
+                                'characters_limit' => '',
+                            ),
+                        ),
+                        'code' => array(
+                            'output_method' => 'php',
+                            'editor_html' => '',
+                            'editor_callback' => '',
+                            'editor_css' => '',
+                            'frontend_html' => '',
+                            'frontend_callback' => array($this, 'frontend_callback'),
+                            'frontend_css' => '',
+                            'show_preview' => 'always',
+                            'single_output' => false,
+                        ),
+                        'condition' => array(),
+                    );
+
+                    lazyblocks()->add_block($block_atts);
+                endif;
+            }
+        }
+
+    }
+
+
+    public function frontend_callback($p)
+    {
+        $svgSize =  96;
+
+        echo '<div class="rpi-question-grid">';
+        echo '<div class="rpi-question-svg">' . $this->clean_up_svg($this->svg,$svgSize , $svgSize) . '</div>';
+        echo '<h3 class="rpi-question-title">' . $p['title'] . '<h3>';
+        echo '<div class="rpi-question-inner-block">' . $p['insertedblocks'] . '</div>';
+        echo ' </div>';
+
+
+        echo '<style>
+                .rpi-question-grid{
+                    display: grid;
+                    grid-template-areas:    "svg title"
+                                            "svg inner-block";
+                }
+                .rpi-question-svg{
+                    grid-area: svg;
+                    margin: auto;
+                    height: '.$svgSize.'px;
+                    width: '.$svgSize.'px;
+                }
+                .rpi-question-title{
+                    grid-area: title;
+                }
+                .rpi-question-inner-block{
+                    grid-area: inner-block;
+                }
+            </style>';
+    }
+
+    /**
+     * @param $svg
+     * @return mixed
+     */
+    public function clean_up_svg($svg, $height = 24, $width = 24)
+    {
+        $svg = str_replace("\n", "", $svg);
+
+        $re = '#height="[^"]*"#m';
+        $svg = preg_replace($re, 'height="' . $height . '"', $svg);
+
+        $re = '#width="[^"]*"#m';
+        $svg = preg_replace($re, 'width="' . $width . '"', $svg);
+
+        $re = '#<!\[CDATA\[[^\]]*\].?>#m';
+        $svg = preg_replace($re, '', $svg);
+
+        $re = '/(.*\W*?)(<svg)/m';
+
+        return preg_replace($re, '$2', $svg);
+
     }
 }
 
