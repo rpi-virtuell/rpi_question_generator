@@ -13,9 +13,13 @@ License: A "Slug" license name e.g. GPL2
 class RpiQuestionGenerator
 {
     /**
-     * @var mixed
+     * @var string
      */
-    private $svg;
+    private $currentSvg;
+    /**
+     * @var array
+     */
+    private $svgCollection;
 
     /**
      * Plugin constructor
@@ -30,6 +34,16 @@ class RpiQuestionGenerator
         add_action('init', array($this, 'register_acf_field_group'));
         add_action('init', array($this, 'register_custom_post_type'));
         add_action('init', array($this, 'create_blocks'));
+    }
+
+    public function set_svg($value)
+    {
+        $this->currentSvg = $value;
+    }
+
+    public function add_to_svg_collection($slug, $svg)
+    {
+        $this->svgCollection[$slug] = $svg;
     }
 
     public function register_acf_field_group()
@@ -184,15 +198,15 @@ class RpiQuestionGenerator
                     $block_id = random_int(10, 99999999);
 
                     if (!empty($fields['block_icon'] && strstr($fields['block_icon'], '<svg') && strstr($fields['block_icon'], '</svg'))) {
-                        $this->svg = $fields['block_icon'];
+                        $this->set_svg($fields['block_icon']);
                     } else {
-                        $this->svg = file_get_contents(plugin_dir_path(__FILE__) . '/assets/029-query.svg');
+                        $this->set_svg(file_get_contents(plugin_dir_path(__FILE__) . '/assets/029-query.svg'));
                     }
 
                     $block_atts = array(
                         'id' => $block_id,
                         'title' => $post->post_title,
-                        'icon' => $this->clean_up_svg($this->svg),
+                        'icon' => $this->clean_up_svg($this->currentSvg),
                         'keywords' => array(),
                         'slug' => 'lazyblock/' . $post->post_name,
                         'description' => '',
@@ -267,6 +281,7 @@ class RpiQuestionGenerator
                     );
 
                     lazyblocks()->add_block($block_atts);
+                    $this->add_to_svg_collection('lazyblock/' . $post->post_name, $this->currentSvg);
                 endif;
             }
         }
@@ -276,10 +291,12 @@ class RpiQuestionGenerator
 
     public function frontend_callback($p)
     {
-        $svgSize =  96;
+
+        $svgSize = 72;
+        $svg = $this->svgCollection[$p['lazyblock']['slug']];
 
         echo '<div class="rpi-question-grid">';
-        echo '<div class="rpi-question-svg">' . $this->clean_up_svg($this->svg,$svgSize , $svgSize) . '</div>';
+        echo '<div class="rpi-question-svg">' . $this->clean_up_svg($svg, $svgSize, $svgSize) . '</div>';
         echo '<h3 class="rpi-question-title">' . $p['title'] . '<h3>';
         echo '<div class="rpi-question-inner-block">' . $p['insertedblocks'] . '</div>';
         echo ' </div>';
@@ -290,18 +307,32 @@ class RpiQuestionGenerator
                     display: grid;
                     grid-template-areas:    "svg title"
                                             "svg inner-block";
+                    grid-template-columns: 20% 80%;
+                    grid-gap: 10px;                                       
                 }
                 .rpi-question-svg{
                     grid-area: svg;
-                    margin: auto;
-                    height: '.$svgSize.'px;
-                    width: '.$svgSize.'px;
+                    margin: 15px auto;
+                    height: ' . $svgSize . 'px;
+                    width: ' . $svgSize . 'px;
                 }
                 .rpi-question-title{
+                margin-top: 15px !important;
                     grid-area: title;
                 }
                 .rpi-question-inner-block{
                     grid-area: inner-block;
+                }
+                @media (max-width: 800px) {
+                
+                    .rpi-question-svg{
+                    height: 48px;
+                    width : 48px;
+                    }
+                    .rpi-question-svg svg{
+                    height: inherit;
+                    width : inherit;
+                    }
                 }
             </style>';
     }
