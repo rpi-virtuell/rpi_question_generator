@@ -3,10 +3,10 @@
 /*
 Plugin Name: Rpi Question Generator
 Plugin URI: https://github.com/rpi-virtuell/rpi_question_generator
-Description: A brief description of the Plugin.
+Description: Wordpress plugin to add new custom blocks via post type
 Version: 1.0
-Author: reintanz
-Author URI: http://URI_Of_The_Plugin_Author
+Author: Daniel Reintanz
+Author URI: https://github.com/FreelancerAMP
 License: A "Slug" license name e.g. GPL2
 */
 
@@ -220,7 +220,7 @@ class RpiQuestionGenerator
                                 1 => 'full',
                             ),
                             'html' => false,
-                            'multiple' => true,
+                            'multiple' => false,
                             'inserter' => true,
                         ),
                         'ghostkit' => array(
