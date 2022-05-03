@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
 
     //kürzt die schreibweisen:
 
@@ -10,30 +10,24 @@
 
 
     const question = {
-        init: function () {
-            question.doBlockListObserve(question.onChange);
-            window.question = question;
-            question.alterDisplay();
-
-        },
 
         alterDisplay: function () {
-            let block = $('#block-' + clientId);
 
+            $('div[class*="wp-block-lazyblock-reli-"] .lzb-content-title span').each(function (i) {
 
-            let questiontitle = block.find('.lzb-content-title');
-
-            //Erstes EingabeControlFeld im Question Block ermitteln
-            let titleInputControl = block.find('.lzb-content-controls div').first();
-            titleInputControl.addClass('question-header');
-
-            //falls vorhanden Block Icon löschen
-            var icon = block.find('.question-icon');
-            titleInputControl.prepend(icon);
+                let icon = $(this);
+                let header = icon.closest('.lazyblock').find('.components-base-control__field').first();
+                header.parent().parent().addClass('block-header');
+                header.prepend(icon);
+            })
         },
 
     }
 
+    window.question = question;
+    wp.hooks.addAction('lzb.components.PreviewServerCallback.onChange', 'bausteine', function (props) {
 
+        question.alterDisplay();
 
+    });
 })(jQuery);

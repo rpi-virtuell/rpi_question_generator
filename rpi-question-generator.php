@@ -44,9 +44,9 @@ class RpiQuestionGenerator
             'rpi-question-style',
             plugin_dir_url( __FILE__ ) . '/assets/css/rpi-question.css'
         );
-        wp_enqueue_style(
+        wp_enqueue_script(
             'rpi-question',
-            plugin_dir_url( __FILE__ ) . '/assets/css/rpi-question.js'
+            plugin_dir_url( __FILE__ ) . '/assets/js/rpi-question.js'
         );
     }
 
@@ -251,15 +251,15 @@ class RpiQuestionGenerator
                                 'type' => 'text',
                                 'name' => 'title',
                                 'default' => $post->post_title,
-                                'label' => 'Überschrift',
-                                'help' => 'Wird als Überschrift dieses Absatzes angezeigt Mehr Hilfe',
+                                'label' => '',
+                                'help' => '',
                                 'child_of' => '',
                                 'placement' => 'content',
                                 'width' => '100',
                                 'hide_if_not_selected' => 'false',
                                 'save_in_meta' => 'false',
                                 'save_in_meta_name' => '',
-                                'required' => 'true',
+                                'required' => 'false',
                                 'placeholder' => '',
                                 'characters_limit' => '',
                             ),

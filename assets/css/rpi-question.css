@@ -1,19 +1,26 @@
 
-.wp-block-lazyblock-reli-bausteine .wp-block-lazyblock-reli-baustein .lzb-content-controls > div:first-child .components-text-control__input{
+div[class*="wp-block-lazyblock-reli-"] .lzb-content-controls > div:first-child .components-text-control__input{
     font-size: 24px;
     font-weight: bold;
 }
-.wp-block-lazyblock-reli-bausteine .wp-block-lazyblock-reli-baustein .lzb-content-controls > div:nth-child(2) .components-text-control__input{
+div[class*="wp-block-lazyblock-reli-"] .lzb-content-controls > div:nth-child(2) .components-text-control__input{
     font-size: 15px;
     font-weight: 600;
 }
+ .lzb-content-title{
+     display: none !important;
+ }
 
-.question-header{
-    display: grid;
-    grid-template-columns: 60px auto;
-    grid-auto-rows: minmax(40px, auto);
+ .block-header input{
+     border: 0 !important;
+ }
+
+ .block-header .components-base-control__field{
+    display: grid !important;
+    grid-template-columns: 60px auto !important;
+    grid-auto-rows: minmax(40px, auto) !important;
 }
-.question-header .question-icon svg{
+.block-header svg{
     width: 40px;
     height: 40px;
 }
