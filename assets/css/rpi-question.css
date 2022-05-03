@@ -1,0 +1,19 @@
+
+.wp-block-lazyblock-reli-bausteine .wp-block-lazyblock-reli-baustein .lzb-content-controls > div:first-child .components-text-control__input{
+    font-size: 24px;
+    font-weight: bold;
+}
+.wp-block-lazyblock-reli-bausteine .wp-block-lazyblock-reli-baustein .lzb-content-controls > div:nth-child(2) .components-text-control__input{
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.question-header{
+    display: grid;
+    grid-template-columns: 60px auto;
+    grid-auto-rows: minmax(40px, auto);
+}
+.question-header .question-icon svg{
+    width: 40px;
+    height: 40px;
+}

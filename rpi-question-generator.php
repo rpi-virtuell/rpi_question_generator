@@ -31,9 +31,23 @@ class RpiQuestionGenerator
      */
     public function __construct()
     {
+
+        add_action('enqueue_block_assets',array($this, 'enqueue_block_scripts'));
+
         add_action('init', array($this, 'register_acf_field_group'));
         add_action('init', array($this, 'register_custom_post_type'));
         add_action('init', array($this, 'create_blocks'));
+    }
+
+    public function enqueue_block_scripts(){
+        wp_enqueue_style(
+            'rpi-question-style',
+            plugin_dir_url( __FILE__ ) . '/assets/css/rpi-question.css'
+        );
+        wp_enqueue_style(
+            'rpi-question',
+            plugin_dir_url( __FILE__ ) . '/assets/css/rpi-question.js'
+        );
     }
 
     public function set_svg($value)
@@ -208,7 +222,7 @@ class RpiQuestionGenerator
                         'title' => $post->post_title,
                         'icon' => $this->clean_up_svg($this->currentSvg),
                         'keywords' => array(),
-                        'slug' => 'lazyblock/' . $post->post_name,
+                        'slug' => 'lazyblock/reli-leitfragen-' . $post->post_name,
                         'description' => '',
                         'category' => 'text',
                         'category_label' => 'text',
@@ -281,7 +295,7 @@ class RpiQuestionGenerator
                     );
 
                     lazyblocks()->add_block($block_atts);
-                    $this->add_to_svg_collection('lazyblock/' . $post->post_name, $this->currentSvg);
+                    $this->add_to_svg_collection('lazyblock/reli-leitfragen-' . $post->post_name, $this->currentSvg);
                 endif;
             }
         }
