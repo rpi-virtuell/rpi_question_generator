@@ -306,33 +306,34 @@ class RpiQuestionGenerator
     public function frontend_callback($p)
     {
 
-        $svgSize = 72;
+        $svgSize = 40;
         $svg = $this->svgCollection[$p['lazyblock']['slug']];
 
         echo '<div class="rpi-question-grid">';
         echo '<div class="rpi-question-svg">' . $this->clean_up_svg($svg, $svgSize, $svgSize) . '</div>';
-        echo '<h3 class="rpi-question-title">' . $p['title'] . '<h3>';
+        echo '<h3 class="rpi-question-title">' . $p['title'] . '</h3>';
         echo '<div class="rpi-question-inner-block">' . $p['insertedblocks'] . '</div>';
         echo ' </div>';
-
 
         echo '<style>
                 .rpi-question-grid{
                     display: grid;
                     grid-template-areas:    "svg title"
                                             "svg inner-block";
-                    grid-template-columns: 20% 80%;
+                    grid-template-columns: 40px auto;
                     grid-gap: 10px;                                       
                 }
                 .rpi-question-svg{
                     grid-area: svg;
-                    margin: 15px auto;
+                    margin: 20px auto 0;
                     height: ' . $svgSize . 'px;
                     width: ' . $svgSize . 'px;
                 }
                 .rpi-question-title{
-                margin-top: 15px !important;
+                	margin-top: 15px !important;
                     grid-area: title;
+                    font-size: 30px;
+                    font-weight: normal;
                 }
                 .rpi-question-inner-block{
                     grid-area: inner-block;
