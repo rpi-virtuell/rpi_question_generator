@@ -224,8 +224,8 @@ class RpiQuestionGenerator
                         'keywords' => array(),
                         'slug' => 'lazyblock/reli-leitfragen-' . $post->post_name,
                         'description' => '',
-                        'category' => 'text',
-                        'category_label' => 'text',
+                        'category' => 'leitfragen',
+                        'category_label' => 'Leitfragen',
                         'supports' => array(
                             'customClassName' => true,
                             'anchor' => false,
