@@ -40,6 +40,9 @@ class RpiQuestionGenerator
     }
 
     public function enqueue_block_scripts(){
+
+	    if (!is_admin()) return;
+
         wp_enqueue_style(
             'rpi-question-style',
             plugin_dir_url( __FILE__ ) . '/assets/css/rpi-question.css'
