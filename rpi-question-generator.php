@@ -32,24 +32,26 @@ class RpiQuestionGenerator
     public function __construct()
     {
 
-        add_action('enqueue_block_assets',array($this, 'enqueue_block_scripts'));
+        add_action('enqueue_block_assets', array($this, 'enqueue_block_scripts'));
 
         add_action('init', array($this, 'register_acf_field_group'));
         add_action('init', array($this, 'register_custom_post_type'));
         add_action('init', array($this, 'create_blocks'));
+        add_action('init', array($this, 'create_default_block'));
     }
 
-    public function enqueue_block_scripts(){
+    public function enqueue_block_scripts()
+    {
 
-	    if (!is_admin()) return;
+        if (!is_admin()) return;
 
         wp_enqueue_style(
             'rpi-question-style',
-            plugin_dir_url( __FILE__ ) . '/assets/css/rpi-question.css'
+            plugin_dir_url(__FILE__) . '/assets/css/rpi-question.css'
         );
         wp_enqueue_script(
             'rpi-question',
-            plugin_dir_url( __FILE__ ) . '/assets/js/rpi-question.js'
+            plugin_dir_url(__FILE__) . '/assets/js/rpi-question.js'
         );
     }
 
@@ -305,10 +307,102 @@ class RpiQuestionGenerator
 
     }
 
+    public function create_default_block()
+    {
+
+        if (function_exists('lazyblocks')) :
+            $block_id = random_int(10, 99999999);
+
+            $this->set_svg(file_get_contents(plugin_dir_path(__FILE__) . '/assets/029-query.svg'));
+
+            $block_atts = array(
+                'id' => $block_id,
+                'title' => 'Standard Block',
+                'icon' => $this->clean_up_svg($this->currentSvg),
+                'keywords' => array(),
+                'slug' => 'lazyblock/reli-default-block',
+                'description' => '',
+                'category' => 'leitfragen',
+                'category_label' => 'Leitfragen',
+                'supports' => array(
+                    'customClassName' => true,
+                    'anchor' => false,
+                    'align' => array(
+                        0 => 'wide',
+                        1 => 'full',
+                    ),
+                    'html' => false,
+                    'multiple' => true,
+                    'inserter' => true,
+                ),
+                'ghostkit' => array(
+                    'supports' => array(
+                        'spacings' => false,
+                        'display' => false,
+                        'scrollReveal' => false,
+                        'frame' => false,
+                        'customCSS' => false,
+                    ),
+                ),
+                'controls' => array(
+                    'control_' . $block_id . 'a' => array(
+                        'type' => 'text',
+                        'name' => 'title',
+                        'default' => 'Standard Block',
+                        'label' => '',
+                        'help' => '',
+                        'child_of' => '',
+                        'placement' => 'content',
+                        'width' => '100',
+                        'hide_if_not_selected' => 'false',
+                        'save_in_meta' => 'false',
+                        'save_in_meta_name' => '',
+                        'required' => 'false',
+                        'placeholder' => '',
+                        'characters_limit' => '',
+                    ),
+                    'control_' . $block_id . 'b' => array(
+                        'type' => 'inner_blocks',
+                        'name' => 'insertedblocks',
+                        'default' => '',
+                        'label' => '',
+                        'help' => '',
+                        'child_of' => '',
+                        'placement' => 'content',
+                        'width' => '100',
+                        'hide_if_not_selected' => 'false',
+                        'save_in_meta' => 'false',
+                        'save_in_meta_name' => '',
+                        'required' => 'false',
+                        'placeholder' => '',
+                        'characters_limit' => '',
+                    ),
+                ),
+                'code' => array(
+                    'output_method' => 'php',
+                    'editor_html' => '',
+                    'editor_callback' => '',
+                    'editor_css' => '',
+                    'frontend_html' => '',
+                    'frontend_callback' => array($this, 'frontend_callback'),
+                    'frontend_css' => '',
+                    'show_preview' => 'always',
+                    'single_output' => false,
+                ),
+                'condition' => array(),
+            );
+
+            lazyblocks()->add_block($block_atts);
+            $this->add_to_svg_collection('lazyblock/reli-default-block', $this->currentSvg);
+        endif;
+
+    }
+
 
     public function frontend_callback($p)
     {
-
+        if (empty(trim(strip_tags($p['insertedblocks'],array('<img>',' <figure>')))))
+            return;
         $svgSize = 40;
         $svg = $this->svgCollection[$p['lazyblock']['slug']];
 
