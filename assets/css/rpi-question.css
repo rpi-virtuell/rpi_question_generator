@@ -17,10 +17,37 @@ div[class*="wp-block-lazyblock-reli-"] .lzb-content-controls > div:nth-child(2) 
 
  .block-header .components-base-control__field{
     display: grid !important;
-    grid-template-columns: 60px auto !important;
+    grid-template-columns: 60px auto 24px!important;
     grid-auto-rows: minmax(40px, auto) !important;
 }
 .block-header svg{
     width: 40px;
     height: 40px;
 }
+.block-header .modal-helper svg{
+    width: 24px;
+    height: 24px;
+}
+.block-header .modal-helper{
+    opacity: .2;
+}
+.block-header .modal-helper:hover{
+    opacity: 1;
+}
+.modal-helper-article{
+    margin: 30px;
+}
+.modal-helper-header{
+    display: grid !important;
+    grid-template-columns: 60px auto;
+}
+.modal-helper-header h1{
+    font-family: "Architects Daughter";
+    color:orangered;
+    line-height: normal;
+    margin-top: 0;
+}
+.modal-helper-header svg{
+     width: 40px;
+     height: 40px;
+ }

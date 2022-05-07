@@ -38,6 +38,7 @@ class RpiQuestionGenerator
         add_action('init', array($this, 'register_custom_post_type'));
         add_action('init', array($this, 'create_blocks'));
         add_action('init', array($this, 'create_default_block'));
+	    add_action( 'wp_ajax_getLeitfrage', array( $this, 'getLeitfrage' ));
     }
 
     public function enqueue_block_scripts()
@@ -472,6 +473,46 @@ class RpiQuestionGenerator
         return preg_replace($re, '$2', $svg);
 
     }
+	/**
+	 * ajax response displays Leitfrage Contents
+	 */
+	public function getLeitfrage(){
+
+		if(isset($_POST['slug'])){
+			$slug = $_POST['slug'];
+
+			$result = get_posts([
+				'post_type'=> 'leitfragenblocks',
+				'name'=>$slug
+			]);
+			$post = isset($result[0])?$result[0]:null;
+			if(is_a($result[0],'WP_Post')){
+				$title = get_field('leitfrage',$post->ID, true);
+				$icon = get_field('block_icon',$post->ID, true);
+				$content = apply_filters('the_content',$post->post_content);
+				?>
+                    <article class="modal-helper-article">
+                        <div class="modal-helper-header">
+                            <div>
+                                <?php echo $icon; ?>
+                            </div>
+                            <h1><?php echo $title ?></h1>
+
+                        </div>
+                        <div class="modal-helper-content">
+		                    <?php echo $content; ?>
+                        </div>
+                    </article>
+				<?php
+				die();
+			}else{
+				echo 'Es wurde nichts gefunden';
+				die();
+			}
+		};
+        var_dump($_POST);die();
+
+	}
 }
 
 new RpiQuestionGenerator();
