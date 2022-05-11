@@ -40,12 +40,22 @@
         alterDisplay: function () {
 
             $('div[class*="wp-block-lazyblock-reli-"] .lzb-content-title span').each(function (i, elem) {
-
-                let icon = $(elem);
-                let header = icon.closest('.lazyblock').find('.components-base-control__field').first();
+                let header = $(elem).closest('.lazyblock').find('.components-base-control__field').first();
                 header.parent().parent().addClass('block-header');
-                header.prepend(icon);
-            })
+
+                //svg als Hintergrundbild laden:
+                let src = 'data:image/svg+xml;base64,' + btoa(elem.innerHTML) ;
+                $(elem).css({
+                    'background-image':'url('+src+')',
+                    'background-size': 'contain',
+                    'background-repeat': 'no-repeat'
+                });
+                header.prepend(elem);
+
+                //svg element im span element nicht anzeigen nicht anzeigen:
+                $(elem).html('');
+
+            });
             $('div[class*="wp-block-lazyblock-reli-leitfragen"]').each(function (i, elem) {
 
                 const parent = $(elem);

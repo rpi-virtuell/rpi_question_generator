@@ -40,8 +40,15 @@ div[class*="wp-block-lazyblock-reli-"] .lzb-content-controls > div:nth-child(2) 
 .modal-helper-header{
     display: grid !important;
     grid-template-columns: 60px auto;
+    margin-bottom: 20px;
 }
 .modal-helper-header h1{
+    font-family: "Architects Daughter";
+    color:#36AF78;
+    line-height: normal;
+    margin-top: 0;
+}
+.modal-helper-header .leitfrage{
     font-family: "Architects Daughter";
     color:orangered;
     line-height: normal;
@@ -50,4 +57,10 @@ div[class*="wp-block-lazyblock-reli-"] .lzb-content-controls > div:nth-child(2) 
 .modal-helper-header svg{
      width: 40px;
      height: 40px;
- }
+}
+.modal-helper-content{
+    border-top: 1px solid #ccc;
+}
+.modal-helper-inner-content{
+    margin-top: 20px;
+}

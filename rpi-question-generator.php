@@ -118,6 +118,27 @@ class RpiQuestionGenerator
                         'return_entities' => 0,
                         'acfe_textarea_code' => 1,
                     ),
+	                array(
+		                'key' => 'field_627bcf9f25f4f',
+		                'label' => 'Mehrfach verwenden',
+		                'name' => 'multiple',
+		                'type' => 'true_false',
+		                'instructions' => '',
+		                'required' => 0,
+		                'conditional_logic' => 0,
+		                'wrapper' => array(
+			                'width' => '',
+			                'class' => '',
+			                'id' => '',
+		                ),
+		                'frontend_admin_display_mode' => 'edit',
+		                'only_front' => 0,
+		                'message' => 'Erlaube, dass dieser Block in einem Material mehrfach verwendet werden darf',
+		                'default_value' => 0,
+		                'ui' => 0,
+		                'ui_on_text' => '',
+		                'ui_off_text' => '',
+	                ),
                 ),
                 'location' => array(
                     array(
@@ -241,7 +262,7 @@ class RpiQuestionGenerator
                                 1 => 'full',
                             ),
                             'html' => false,
-                            'multiple' => false,
+                            'multiple' => $fields['block_icon']?true:false,
                             'inserter' => true,
                         ),
                         'ghostkit' => array(
@@ -487,7 +508,8 @@ class RpiQuestionGenerator
 			]);
 			$post = isset($result[0])?$result[0]:null;
 			if(is_a($result[0],'WP_Post')){
-				$title = get_field('leitfrage',$post->ID, true);
+				$title = $post->post_title;
+				$leitfrage = get_field('leitfrage',$post->ID, true);
 				$icon = get_field('block_icon',$post->ID, true);
 				$content = apply_filters('the_content',$post->post_content);
 				?>
@@ -497,10 +519,13 @@ class RpiQuestionGenerator
                                 <?php echo $icon; ?>
                             </div>
                             <h1><?php echo $title ?></h1>
-
+                            <div></div>
+                            <p class="leitfrage"><?php echo $leitfrage ?></p>
                         </div>
                         <div class="modal-helper-content">
-		                    <?php echo $content; ?>
+                            <div class="modal-helper-inner-content">
+		                        <?php echo $content; ?>
+                            </div>
                         </div>
                     </article>
 				<?php
