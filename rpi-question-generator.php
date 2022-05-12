@@ -307,6 +307,24 @@ class RpiQuestionGenerator
                                 'placeholder' => '',
                                 'characters_limit' => '',
                             ),
+                            'control_' . $block_id . 'c' => array(
+	                            'type' => 'toggle',
+	                            'name' => 'is_teaser',
+	                            'default' => '',
+	                            'label' => 'Der Inshalt des Blocks ist der Teaser',
+	                            'help' => '',
+	                            'child_of' => '',
+	                            'placement' => 'inspector',
+	                            'width' => '100',
+	                            'hide_if_not_selected' => 'false',
+	                            'save_in_meta' => 'false',
+	                            'save_in_meta_name' => '',
+	                            'required' => 'false',
+	                            'checked' => 'true',
+	                            'alongside_text' => '',
+	                            'placeholder' => '',
+	                            'characters_limit' => '',
+                            )
                         ),
                         'code' => array(
                             'output_method' => 'php',
@@ -430,7 +448,7 @@ class RpiQuestionGenerator
         $svg = $this->svgCollection[$p['lazyblock']['slug']];
 
         echo '<div class="rpi-question-grid">';
-        echo '<div class="rpi-question-svg">' . $this->clean_up_svg($svg, $svgSize, $svgSize) . '</div>';
+        echo '<div class="rpi-question-svg" style="background-image:url(data:image/svg+xml;base64,'.base64_encode($svg).');background-size: contain;"></div>';
         echo '<h3 class="rpi-question-title">' . $p['title'] . '</h3>';
         echo '<div class="rpi-question-inner-block">' . $p['insertedblocks'] . '</div>';
         echo ' </div>';

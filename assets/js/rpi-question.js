@@ -74,14 +74,51 @@
             $('.modal-helper').on('click', question.onHelpIconClick);
 
 
-        },
+            //folgende Trigger werden in im plugin rpi-material-input-templates gefeuert ###############################
+
+            //sicherstellen, dass nur 1! Block Teaser sein kann
+            $(window).on('editorBlocksChanged',(e,block,blocklist)=>{
+                let is_teaser = false;
+                blocklist.forEach((block)=>{
+                    if(block.attributes.is_teaser){
+                        if(!is_teaser){
+                            is_teaser = true;
+                        }else{
+                            wp.data.dispatch('core/block-editor').updateBlockAttributes(block.clientId,{'is_teaser':false});
+                        }
+                    }
+
+                });
+            });
+
+            //sobald etwas in Block mit attributes.is_teaser geschrieben wird, wird der Inhalt als Post Excerpt gespeichert
+            $(window).on('editorContentChanged',(e,block,html)=>{
+                if(block.attributes.is_teaser){
+                    let html = [];
+                    let post_id = wp.data.select('core/editor').getCurrentPost()
+                    block.innerBlocks.forEach((block)=>{
+                        if(block.name='core/paragraph'){
+                            if($('#block-'+block.clientId).length==1){
+                                html.push($('#block-'+block.clientId).text());
+                            }
+                        }
+                    });
+                    wp.data.dispatch('core/editor').editPost({'id':post_id,'excerpt':html.join("\n")})
+                }
+            });
+            //##########################################################################################################
+        }
 
     }
 
     window.question = question;
-    wp.hooks.addAction('lzb.components.PreviewServerCallback.onChange', 'bausteine', function (props) {
+    wp.hooks.addAction('lzb.components.PreviewServerCallback.onChange', 'question', function (props) {
+
+        console.log('change Leitfrage');
 
         question.alterDisplay();
 
     });
+
+
 })(jQuery);
