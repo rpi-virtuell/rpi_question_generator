@@ -95,7 +95,7 @@
             $(window).on('editorContentChanged',(e,block,html)=>{
                 if(block.attributes.is_teaser){
                     let html = [];
-                    let post_id = wp.data.select('core/editor').getCurrentPost()
+                    let post_id = wp.data.select('core/editor').getCurrentPost().id;
                     block.innerBlocks.forEach((block)=>{
                         if(block.name='core/paragraph'){
                             if($('#block-'+block.clientId).length==1){
