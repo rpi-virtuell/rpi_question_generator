@@ -234,6 +234,7 @@ class RpiQuestionGenerator
             'update_post_meta_cache' => false));
         foreach ($posts as $post) {
             $fields = get_fields($post->ID);
+            $is_multiple = isset($fields['multiple']) && $fields['multiple'] ? true :false;
 
             if ($fields) {
                 if (function_exists('lazyblocks')) :
@@ -262,7 +263,7 @@ class RpiQuestionGenerator
                                 1 => 'full',
                             ),
                             'html' => false,
-                            'multiple' => $fields['block_icon']?true:false,
+                            'multiple' => $is_multiple,
                             'inserter' => true,
                         ),
                         'ghostkit' => array(
