@@ -374,7 +374,7 @@ class RpiQuestionGenerator
 
             $block_atts = array(
                 'id' => $block_id,
-                'title' => 'Standard Block',
+                'title' => 'getBlockIds Block',
                 'icon' => $this->clean_up_svg($this->currentSvg),
                 'keywords' => array(),
                 'slug' => 'lazyblock/reli-default-block',
