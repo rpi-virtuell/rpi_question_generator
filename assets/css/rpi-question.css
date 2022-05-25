@@ -15,7 +15,7 @@ div[class*="wp-block-lazyblock-reli-"] .lzb-content-controls > div:nth-child(2) 
      border: 0 !important;
  }
 
- .block-header .components-base-control__field{
+.block-header .components-base-control__field{
     display: grid !important;
     grid-template-columns: 60px auto 24px!important;
     grid-auto-rows: minmax(40px, auto) !important;
