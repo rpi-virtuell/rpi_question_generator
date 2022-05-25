@@ -366,7 +366,7 @@ class RpiQuestionGenerator
                             'control_' . $block_id . 'e' => array(
 	                            'type' => 'hidden',
 	                            'name' => 'is_valid',
-	                            'default' => '',
+	                            'default' => false,
 	                            'label' => '',
 	                            'help' => '',
 	                            'child_of' => '',
