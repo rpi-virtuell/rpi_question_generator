@@ -64,3 +64,6 @@ div[class*="wp-block-lazyblock-reli-"] .lzb-content-controls > div:nth-child(2) 
 .modal-helper-inner-content{
     margin-top: 20px;
 }
+.lzb-inspector-controls .is-opened > div:nth-child(2) .components-toggle-control{
+    display: none;
+}

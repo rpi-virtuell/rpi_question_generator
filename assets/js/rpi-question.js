@@ -119,6 +119,9 @@
         question.alterDisplay();
 
     });
-
+    wp.hooks.addFilter( 'lzb.constructor.controls.item', 'my.custom.namespace', function ( render, props ) {
+        console.log( 'lzb.constructor.controls.toogle.item', render, props );
+        return render;
+    } );
 
 })(jQuery);
