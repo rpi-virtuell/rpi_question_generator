@@ -34,11 +34,12 @@ class RpiQuestionGenerator
 
         add_action('enqueue_block_assets', array($this, 'enqueue_block_scripts'));
 
-        add_action('init', array($this, 'register_acf_field_group'));
+        add_action('init', array($this, 'register_acf_field_group'),5);
         add_action('init', array($this, 'register_custom_post_type'));
-        add_action('init', array($this, 'create_blocks'));
-        add_action('init', array($this, 'create_default_block'));
-	    add_action( 'wp_ajax_getLeitfrage', array( $this, 'getLeitfrage' ));
+        add_action('init', array($this, 'create_blocks'),6);
+
+        add_action('init', array($this, 'create_default_block'),6);
+        add_action( 'wp_ajax_getLeitfrage', array( $this, 'getLeitfrage' ));
     }
 
     public function enqueue_block_scripts()
@@ -253,9 +254,13 @@ class RpiQuestionGenerator
             'suppress_filters' => true, // DO NOT allow WPML to modify the query
             'post_status' => 'publish',
             'update_post_meta_cache' => false));
+
+
         foreach ($posts as $post) {
             $fields = get_fields($post->ID);
             $is_multiple = isset($fields['multiple']) && $fields['multiple'] ? true :false;
+
+
 
             if ($fields) {
                 if (function_exists('lazyblocks')) :
@@ -494,8 +499,8 @@ class RpiQuestionGenerator
                 ),
                 'code' => array(
                     'output_method' => 'php',
-                    'editor_html' => '',
-                    'editor_callback' => '',
+                    'editor_html' => " ",
+                    'editor_callback' => "",
                     'editor_css' => '',
                     'frontend_html' => '',
                     'frontend_callback' => array($this, 'frontend_callback'),
@@ -626,7 +631,7 @@ class RpiQuestionGenerator
 				die();
 			}
 		};
-        var_dump($_POST);die();
+        //var_dump($_POST);die();
 
 	}
 }
