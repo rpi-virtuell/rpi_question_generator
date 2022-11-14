@@ -406,7 +406,7 @@ class RpiQuestionGenerator
                         ),
                         'code' => array(
                             'output_method' => 'php',
-                            'editor_html' => '',
+                            'editor_html' => ' ',
                             'editor_callback' => '',
                             'editor_css' => '',
                             'frontend_html' => '',
