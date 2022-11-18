@@ -372,7 +372,7 @@ class RpiQuestionGenerator
                                 'id'=>'lzbblock_is_valid'
                             ),
                             'control_' . $block_id . 'e' => array(
-	                            'type' => 'hidden',
+	                            'type' => 'text',
 	                            'name' => 'template',
 	                            'default' => '',
 	                            'label' => '',
@@ -388,7 +388,7 @@ class RpiQuestionGenerator
 	                            'characters_limit' => '',
                             ),
                             'control_' . $block_id . 'f' => array(
-	                            'type' => 'hidden',
+	                            'type' => 'number',
 	                            'name' => 'minimum_characters',
 	                            'default' => $fields['minimum_characters'],
 	                            'label' => '',

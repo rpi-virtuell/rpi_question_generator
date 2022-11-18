@@ -34,6 +34,15 @@ div[class*="wp-block-lazyblock-reli-"] .lzb-content-controls > div:nth-child(2) 
 .block-header .modal-helper:hover{
     opacity: 1;
 }
+
+div[class*="wp-block-lazyblock-reli-"] .components-base-control__label{
+    color: orangered;
+    text-transform: initial;
+    font-family: "Architects Daughter";
+    font-size: medium;
+    clear: left;
+}
+
 .modal-helper-article{
     margin: 30px;
 }
