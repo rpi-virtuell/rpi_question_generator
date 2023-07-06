@@ -15,7 +15,7 @@ div[class*="wp-block-lazyblock-reli-"] .lzb-content-controls > div:nth-child(2) 
      border: 0 !important;
  }
 
-.block-header .lazyblocks-component-base-control > .components-base-control__field{
+.lazyblocks-component-base-control.block-header .components-base-control > .components-base-control__field{
     display: grid !important;
     grid-template-columns: 60px auto 24px!important;
     grid-auto-rows: minmax(40px, auto) !important;
@@ -35,7 +35,7 @@ div[class*="wp-block-lazyblock-reli-"] .lzb-content-controls > div:nth-child(2) 
     opacity: 1;
 }
 
-div[class*="wp-block-lazyblock-reli-"] .components-base-control__label{
+div[class*="wp-block-lazyblock-reli-"] .lazyblocks-component-base-control__label, div[class*="wp-block-lazyblock-reli-"]  .bausteine-leitfrage{
     color: orangered;
     text-transform: initial;
     font-family: "Architects Daughter";
