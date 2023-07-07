@@ -33,6 +33,7 @@ class RpiQuestionGenerator
     {
 
         add_action('enqueue_block_assets', array($this, 'enqueue_block_scripts'));
+        add_action('enqueue_block_assets', array($this, 'enqueue_jquery_scripts'));
 
         add_action('init', array($this, 'register_acf_field_group'),5);
         add_action('init', array($this, 'register_custom_post_type'));
@@ -42,6 +43,12 @@ class RpiQuestionGenerator
         add_action( 'wp_ajax_getLeitfrage', array( $this, 'getLeitfrage' ));
     }
 
+    public function enqueue_jquery_scripts(){
+        wp_enqueue_script(
+            'rpi-question-frontend-script',
+            plugin_dir_url(__FILE__) . '/assets/js/rpi-question-frontend.js'
+        );
+    }
     public function enqueue_block_scripts()
     {
 
@@ -318,22 +325,22 @@ class RpiQuestionGenerator
                                 'placeholder' => '',
                                 'characters_limit' => '',
                             ),
-                            'control_' . $block_id . 'b' => array(
-                                'type' => 'inner_blocks',
-                                'name' => 'insertedblocks',
-                                'default' => '',
-                                'label' => $fields['leitfrage'],
-                                'help' => '',
-                                'child_of' => '',
-                                'placement' => 'content',
-                                'width' => '100',
-                                'hide_if_not_selected' => 'false',
-                                'save_in_meta' => 'false',
-                                'save_in_meta_name' => '',
-                                'required' => 'false',
-                                'placeholder' => '',
-                                'characters_limit' => '',
-                            ),
+//                            'control_' . $block_id . 'b' => array(
+//                                'type' => 'inner_blocks',
+//                                'name' => 'insertedblocks',
+//                                'default' => '',
+//                                'label' => $fields['leitfrage'],
+//                                'help' => '',
+//                                'child_of' => '',
+//                                'placement' => 'content',
+//                                'width' => '100',
+//                                'hide_if_not_selected' => 'false',
+//                                'save_in_meta' => 'false',
+//                                'save_in_meta_name' => '',
+//                                'required' => 'false',
+//                                'placeholder' => '',
+//                                'characters_limit' => '',
+//                            ),
                             'control_' . $block_id . 'c' => array(
 	                            'type' => 'toggle',
 	                            'name' => 'is_teaser',
@@ -406,7 +413,7 @@ class RpiQuestionGenerator
                         ),
                         'code' => array(
                             'output_method' => 'php',
-                            'editor_html' => ' ',
+                            'editor_html' => '<?php $this.editor_hml($attributes);',
                             'editor_callback' => '',
                             'editor_css' => '',
                             'frontend_html' => '',
@@ -424,6 +431,16 @@ class RpiQuestionGenerator
             }
         }
 
+    }
+
+    public function editor_hml($attributes){
+        ?>
+        <InnerBlocks allowedBlocks="['core/paragraph' , 'core/video', 'core/verse', 'core/table', 'core/spacer',
+                                     'core/separator', 'core/quote', 'core/pullquote', 'core/media-text', 'core/list'
+                                    ,'core/embed','core/image','core/heading','core/gallery','core/file','core/cover'
+                                    ,'core/buttons', 'core/audio', 'core/html'
+                                     ]"/>
+        <?php
     }
 
     public function create_default_block()
@@ -520,8 +537,10 @@ class RpiQuestionGenerator
 
     public function frontend_callback($p)
     {
-        if (empty(trim(strip_tags($p['insertedblocks'],array('<img>',' <figure>')))))
-            return;
+
+
+//        if (empty(trim(strip_tags($p['insertedblocks'],array('<img>',' <figure>')))))
+//            return;
         $svgSize = 40;
         $svg = $this->svgCollection[$p['lazyblock']['slug']];
 
@@ -529,6 +548,7 @@ class RpiQuestionGenerator
         echo '<div class="rpi-question-svg" style="background-image:url(data:image/svg+xml;base64,'.base64_encode($svg).');background-size: contain;"></div>';
         echo '<h3 class="rpi-question-title">' . $p['title'] . '</h3>';
         echo '<div class="rpi-question-inner-block">' . $p['insertedblocks'] . '</div>';
+        echo '<div class="rpi-question-inner-block"><InnerBlocks /></div>';
         echo ' </div>';
 
         echo '<style>

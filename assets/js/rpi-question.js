@@ -73,6 +73,12 @@
             $('.modal-helper').off('click', question.onHelpIconClick);
             $('.modal-helper').on('click', question.onHelpIconClick);
 
+            $('div[class*="wp-block-lazyblock-reli-leitfragen"]').each(function (i, elem) {
+                const block = $(elem);
+                const inner = block.find('.rpi-question-grid .rpi-question-inner-block .lazyblock-inner-blocks').first();
+                if(!inner.html()) block.hide();
+
+            })
 
         }
 
@@ -90,5 +96,7 @@
         console.log( 'lzb.constructor.controls.toogle.item', render, props );
         return render;
     } );
+
+
 
 })(jQuery);
