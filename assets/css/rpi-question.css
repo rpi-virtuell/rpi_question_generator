@@ -35,7 +35,9 @@ div[class*="wp-block-lazyblock-reli-"] .lzb-content-controls > div:nth-child(2) 
     opacity: 1;
 }
 
-div[class*="wp-block-lazyblock-reli-"] .lazyblocks-component-base-control__label, div[class*="wp-block-lazyblock-reli-"]  .bausteine-leitfrage{
+div[class*="wp-block-lazyblock-reli-"] .lazyblocks-component-base-control__label,
+div[class*="wp-block-lazyblock-reli-"]  .bausteine-leitfrage,
+div[class*="wp-block-lazyblock-reli-"]  .lazyblocks-component-base-control__help{
     color: orangered;
     text-transform: initial;
     font-family: "Architects Daughter";
@@ -74,5 +76,10 @@ div[class*="wp-block-lazyblock-reli-"] .lazyblocks-component-base-control__label
     margin-top: 20px;
 }
 .lzb-inspector-controls .is-opened > div:nth-child(2) .components-toggle-control{
-    display: none;
+    /*display: none;*/
+}
+.lzb-gutenberg-repeater-item .lzb-gutenberg-repeater-btn-remove {
+    top: 0px;
+    /*left: -5px!important;*/
+    right: -23px;
 }

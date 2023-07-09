@@ -33,7 +33,7 @@ class RpiQuestionGenerator
     {
 
         add_action('enqueue_block_assets', array($this, 'enqueue_block_scripts'));
-        add_action('enqueue_block_assets', array($this, 'enqueue_jquery_scripts'));
+        add_action('wp_enqueue_scripts', array($this, 'enqueue_jquery_scripts'));
 
         add_action('init', array($this, 'register_acf_field_group'),5);
         add_action('init', array($this, 'register_custom_post_type'));
@@ -314,7 +314,7 @@ class RpiQuestionGenerator
                                 'name' => 'title',
                                 'default' => $post->post_title,
                                 'label' => '',
-                                'help' => '',
+                                'help' => $fields['leitfrage'],
                                 'child_of' => '',
                                 'placement' => 'content',
                                 'width' => '100',
@@ -326,7 +326,7 @@ class RpiQuestionGenerator
                                 'characters_limit' => '',
                             ),
 //                            'control_' . $block_id . 'b' => array(
-//                                'type' => 'inner_blocks',
+//                                'type' => 'text',
 //                                'name' => 'insertedblocks',
 //                                'default' => '',
 //                                'label' => $fields['leitfrage'],
@@ -413,7 +413,7 @@ class RpiQuestionGenerator
                         ),
                         'code' => array(
                             'output_method' => 'php',
-                            'editor_html' => '<?php $this.editor_hml($attributes);',
+                            'editor_html' => '<?php RpiQuestionGenerator::editor_hml($attributes);',
                             'editor_callback' => '',
                             'editor_css' => '',
                             'frontend_html' => '',
@@ -433,14 +433,68 @@ class RpiQuestionGenerator
 
     }
 
-    public function editor_hml($attributes){
-        ?>
-        <InnerBlocks allowedBlocks="['core/paragraph' , 'core/video', 'core/verse', 'core/table', 'core/spacer',
-                                     'core/separator', 'core/quote', 'core/pullquote', 'core/media-text', 'core/list'
+    static function editor_hml($attributes){
+
+        $allow_rich_inner_blocks = array(
+                'lazyblock/reli-leitfragen-vorgehensweise'
+            ,   'lazyblock/reli-leitfragen-eine-andere-idee'
+            ,   'lazyblock/reli-leitfragen-erzaehlung'
+            ,   'lazyblock/reli-leitfragen-medium'
+            ,   'lazyblock/reli-leitfragen-aktion'
+            ,   'lazyblock/reli-leitfragen-vorbereitung'
+            ,   'lazyblock/reli-leitfragen-rueckblick'
+            ,   'lazyblock/reli-leitfragen-anhang'
+            ,   'lazyblock/reli-leitfragen-bilder'
+        );
+        $allow_lists = array(
+                'lazyblock/reli-leitfragen-abstrakte-beschreibung-der-methode'
+            ,   'lazyblock/reli-leitfragen-anmoderation'
+            ,   'lazyblock/reli-leitfragen-vorueberlegungen'
+            ,   'lazyblock/reli-leitfragen-alltagssituation-kinderfahrung'
+        );
+
+        if($attributes['is_teaser']){
+            ?>
+            <InnerBlocks
+                allowedBlocks="['core/paragraph']"
+                template="[  [ 'core/paragraph',  { placeholder: 'Tippe hier' } ] ]"
+                prioritizedInserterBlocks="['core/paragraph']"
+                renderAppender="false"
+            >
+            <?php
+        }elseif(in_array($attributes["lazyblock"]["slug"],$allow_rich_inner_blocks)){
+            ?>
+            <InnerBlocks allowedBlocks="['core/paragraph' , 'core/video', 'core/verse', 'core/table', 'core/spacer'
+                                    ,'core/separator', 'core/pullquote', 'core/media-text', 'core/list'
                                     ,'core/embed','core/image','core/heading','core/gallery','core/file','core/cover'
-                                    ,'core/buttons', 'core/audio', 'core/html'
-                                     ]"/>
-        <?php
+                                    ,'core/buttons', 'core/audio', 'core/html']"
+                         template="[  [ 'core/paragraph', { placeholder: 'Schreibe Text oder tippe / um Gestaltungselemente einzufügen...' } ] ]"
+                         prioritizedInserterBlocks="['core/paragraph' , 'core/table', 'core/media-text', 'core/list',
+                                    ,'core/embed','core/image','core/heading','core/gallery','core/file','core/cover']"
+
+            />
+            <?php
+        }elseif (in_array($attributes["lazyblock"]["slug"],$allow_lists)){
+            ?>
+            <InnerBlocks allowedBlocks="['core/paragraph' , 'core/list', 'core/video'
+                                        ,'core/embed','core/image','core/audio']"
+                         template="[  [ 'core/paragraph', { placeholder: 'Schreibe Text oder tippe / um eine Aufzählung oder Medien einzufügen ...' } ] ]"
+                         prioritizedInserterBlocks="['core/paragraph' , 'core/table', 'core/media-text', 'core/list',
+                                    ,'core/embed','core/image','core/heading','core/gallery','core/file','core/cover']"
+            />
+            <?php
+        }else{
+            ?>
+            <InnerBlocks prioritizedInserterBlocks="['core/paragraph' , 'core/table', 'core/media-text', 'core/list',
+                                    ,'core/embed','core/image','core/heading','core/gallery','core/file','core/cover']"
+
+                         template="[  [ 'core/paragraph', { placeholder: 'Schreibe Text oder tippe / um Layoutblöcke einzufügen ...' } ] ]"
+            />
+            <?php
+        }
+
+
+
     }
 
     public function create_default_block()
