@@ -80,6 +80,12 @@ div[class*="wp-block-lazyblock-reli-"]  .lazyblocks-component-base-control__help
 }
 .lzb-gutenberg-repeater-item .lzb-gutenberg-repeater-btn-remove {
     top: 0px;
-    /*left: -5px!important;*/
     right: -23px;
+}
+.wp-block-file__content-wrapper {
+
+    border-bottom: 1px dotted orangered;
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: auto 150px;
 }

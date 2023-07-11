@@ -443,7 +443,6 @@ class RpiQuestionGenerator
             ,   'lazyblock/reli-leitfragen-vorbereitung'
             ,   'lazyblock/reli-leitfragen-rueckblick'
             ,   'lazyblock/reli-leitfragen-anhang'
-            ,   'lazyblock/reli-leitfragen-bilder'
         );
         $allow_lists = array(
                 'lazyblock/reli-leitfragen-abstrakte-beschreibung-der-methode'
@@ -453,8 +452,8 @@ class RpiQuestionGenerator
         );
         $files_list = array(
                 'lazyblock/reli-leitfragen-bilder'
-            ,    'lazyblock/reli-leitfragen-zum-download'
-            ,    'lazyblock/reli-leitfragen-medium'
+            ,   'lazyblock/reli-leitfragen-zum-download'
+            ,   'lazyblock/reli-leitfragen-medium'
 
         );
 
@@ -475,40 +474,48 @@ class RpiQuestionGenerator
                                     ,'core/buttons', 'core/audio', 'core/html']"
                          template="[  [ 'core/paragraph', { placeholder: 'Schreibe Text oder tippe / um Gestaltungselemente einzufügen...' } ] ]"
                          prioritizedInserterBlocks="['core/paragraph' , 'core/table', 'core/media-text', 'core/list',
-                                    ,'core/embed','core/image','core/heading','core/gallery','core/file','core/cover']"
-
-            />
+                                    ,'core/embed','core/image','core/heading','core/gallery','core/file','core/cover']"></InnerBlocks>
             <?php
         }elseif (in_array($attributes["lazyblock"]["slug"],$allow_lists)){
             ?>
-            <InnerBlocks allowedBlocks="['core/paragraph' , 'core/list', 'core/video'
-                                        ,'core/embed','core/image','core/audio']"
+            <InnerBlocks allowedBlocks="['core/paragraph' , 'core/list', 'core/video','core/embed','core/image','core/audio']"
                          template="[  [ 'core/paragraph', { placeholder: 'Schreibe Text oder tippe / um eine Aufzählung oder Medien einzufügen ...' } ] ]"
                          prioritizedInserterBlocks="['core/paragraph' , 'core/table', 'core/media-text', 'core/list',
-                                    ,'core/embed','core/image','core/heading','core/gallery','core/file','core/cover']"
-            />
+                                    ,'core/embed','core/image','core/heading','core/gallery','core/file','core/cover']" />
             <?php
-        }elseif (in_array($attributes["lazyblock"]["slug"],$files_list)){
-            if($attributes["lazyblock"]["slug"] == 'lazyblock/reli-leitfragen-bilder')
-                $template="[  [ 'core/gallery' ] ]";
-            if($attributes["lazyblock"]["slug"] == 'lazyblock/reli-zum-download')
-                $template="[  [ 'core/paragraph' ] ]";
-            if($attributes["lazyblock"]["slug"] == 'lazyblock/reli-medium')
-                $template="[  [ 'core/media-text' ] ]";
+        }elseif ( in_array($attributes["lazyblock"]["slug"] ,$files_list ) ){
 
-            ?>
-            <InnerBlocks allowedBlocks="['core/paragraph' ,'core/file','core/image','core/buttons',  'core/gallery',  'core/media-text'']"
-                         template=<?php echo $template;?>
-                         prioritizedInserterBlocks="['core/paragraph' , 'core/image','core/gallery','core/file','core/cover']"
-            />
-            <?php
+
+
+            if($attributes["lazyblock"]["slug"] === 'lazyblock/reli-leitfragen-bilder'):
+                ?>
+                <InnerBlocks allowedBlocks="['core/paragraph' ,'core/file','core/image','core/buttons',  'core/gallery',  'core/media-text']"
+                         template="[ [ 'core/gallery' ], [ 'core/paragraph' ] ]"
+                         prioritizedInserterBlocks="['core/paragraph' , 'core/image','core/gallery','core/file','core/cover']" />
+                <?php
+
+            elseif($attributes["lazyblock"]["slug"] === 'lazyblock/reli-leitfragen-zum-download'):
+                ?>
+                <InnerBlocks allowedBlocks="['core/paragraph' ,'core/file','core/image','core/buttons',  'core/gallery',  'core/media-text']"
+                         template="[ [ 'core/file' ] ]"
+                         prioritizedInserterBlocks="['core/paragraph' , 'core/image','core/gallery','core/file','core/cover']" />
+                <?php
+
+            elseif($attributes["lazyblock"]["slug"] === 'lazyblock/reli-leitfragen-medium'):
+                ?>
+                <InnerBlocks allowedBlocks="['core/paragraph' ,'core/file','core/image','core/buttons',  'core/gallery',  'core/media-text']"
+                         template="[ [ 'core/media-text' ],[ 'core/paragraph' ] ]"
+                         prioritizedInserterBlocks="['core/paragraph' , 'core/image','core/gallery','core/file','core/cover']" />
+                <?php
+
+            endif;
+
         }else{
             ?>
             <InnerBlocks prioritizedInserterBlocks="['core/paragraph' , 'core/table', 'core/media-text', 'core/list',
                                     ,'core/embed','core/image','core/heading','core/gallery','core/file','core/cover']"
-
-                         template="[  [ 'core/paragraph', { placeholder: 'Schreibe Text oder tippe / um Layoutblöcke einzufügen ...' } ] ]"
-            />
+                         allowedBlocks="['core/paragraph' ,'core/file','core/image','core/buttons',  'core/gallery',  'core/table', 'core/media-text', 'core/list']"
+                         template="[  [ 'core/paragraph', { placeholder: 'Schreibe Text oder tippe / um Layoutblöcke einzufügen ...' } ] ]"></InnerBlocks>
             <?php
         }
 
@@ -630,7 +637,7 @@ class RpiQuestionGenerator
                     grid-template-areas:    "svg title"
                                             "svg inner-block";
                     grid-template-columns: 40px auto;
-                    grid-gap: 10px;                                       
+                    grid-gap: 10px;
                 }
                 .rpi-question-svg{
                     grid-area: svg;
@@ -648,7 +655,7 @@ class RpiQuestionGenerator
                     grid-area: inner-block;
                 }
                 @media (max-width: 800px) {
-                
+
                     .rpi-question-svg{
                     height: 48px;
                     width : 48px;
