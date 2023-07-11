@@ -439,7 +439,6 @@ class RpiQuestionGenerator
                 'lazyblock/reli-leitfragen-vorgehensweise'
             ,   'lazyblock/reli-leitfragen-eine-andere-idee'
             ,   'lazyblock/reli-leitfragen-erzaehlung'
-            ,   'lazyblock/reli-leitfragen-medium'
             ,   'lazyblock/reli-leitfragen-aktion'
             ,   'lazyblock/reli-leitfragen-vorbereitung'
             ,   'lazyblock/reli-leitfragen-rueckblick'
@@ -451,6 +450,12 @@ class RpiQuestionGenerator
             ,   'lazyblock/reli-leitfragen-anmoderation'
             ,   'lazyblock/reli-leitfragen-vorueberlegungen'
             ,   'lazyblock/reli-leitfragen-alltagssituation-kinderfahrung'
+        );
+        $files_list = array(
+                'lazyblock/reli-leitfragen-bilder'
+            ,    'lazyblock/reli-leitfragen-zum-download'
+            ,    'lazyblock/reli-leitfragen-medium'
+
         );
 
         if($attributes['is_teaser']){
@@ -481,6 +486,20 @@ class RpiQuestionGenerator
                          template="[  [ 'core/paragraph', { placeholder: 'Schreibe Text oder tippe / um eine Aufzählung oder Medien einzufügen ...' } ] ]"
                          prioritizedInserterBlocks="['core/paragraph' , 'core/table', 'core/media-text', 'core/list',
                                     ,'core/embed','core/image','core/heading','core/gallery','core/file','core/cover']"
+            />
+            <?php
+        }elseif (in_array($attributes["lazyblock"]["slug"],$files_list)){
+            if($attributes["lazyblock"]["slug"] == 'lazyblock/reli-leitfragen-bilder')
+                $template="[  [ 'core/gallery' ] ]";
+            if($attributes["lazyblock"]["slug"] == 'lazyblock/reli-zum-download')
+                $template="[  [ 'core/paragraph' ] ]";
+            if($attributes["lazyblock"]["slug"] == 'lazyblock/reli-medium')
+                $template="[  [ 'core/media-text' ] ]";
+
+            ?>
+            <InnerBlocks allowedBlocks="['core/paragraph' ,'core/file','core/image','core/buttons',  'core/gallery',  'core/media-text'']"
+                         template=<?php echo $template;?>
+                         prioritizedInserterBlocks="['core/paragraph' , 'core/image','core/gallery','core/file','core/cover']"
             />
             <?php
         }else{
