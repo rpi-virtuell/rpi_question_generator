@@ -473,15 +473,13 @@ class RpiQuestionGenerator
                                     ,'core/embed','core/image','core/heading','core/gallery','core/file','core/cover'
                                     ,'core/buttons', 'core/audio', 'core/html']"
                          template="[  [ 'core/paragraph', { placeholder: 'Schreibe Text oder tippe / um Gestaltungselemente einzufügen...' } ] ]"
-                         prioritizedInserterBlocks="['core/paragraph' , 'core/table', 'core/media-text', 'core/list',
-                                    ,'core/embed','core/image','core/heading','core/gallery','core/file','core/cover']"></InnerBlocks>
+                         prioritizedInserterBlocks="['core/paragraph' , 'core/table', 'core/list', 'core/embed','core/heading']" />
             <?php
         }elseif (in_array($attributes["lazyblock"]["slug"],$allow_lists)){
             ?>
             <InnerBlocks allowedBlocks="['core/paragraph' , 'core/list', 'core/video','core/embed','core/image','core/audio']"
                          template="[  [ 'core/paragraph', { placeholder: 'Schreibe Text oder tippe / um eine Aufzählung oder Medien einzufügen ...' } ] ]"
-                         prioritizedInserterBlocks="['core/paragraph' , 'core/table', 'core/media-text', 'core/list',
-                                    ,'core/embed','core/image','core/heading','core/gallery','core/file','core/cover']" />
+                         prioritizedInserterBlocks="['core/heading','core/paragraph' , 'core/list']" />
             <?php
         }elseif ( in_array($attributes["lazyblock"]["slug"] ,$files_list ) ){
 
@@ -491,21 +489,21 @@ class RpiQuestionGenerator
                 ?>
                 <InnerBlocks allowedBlocks="['core/paragraph' ,'core/file','core/image','core/buttons',  'core/gallery',  'core/media-text']"
                          template="[ [ 'core/gallery' ], [ 'core/paragraph' ] ]"
-                         prioritizedInserterBlocks="['core/paragraph' , 'core/image','core/gallery','core/file','core/cover']" />
+                         prioritizedInserterBlocks="['core/image','core/cover','core/gallery','core/paragraph']" />
                 <?php
 
             elseif($attributes["lazyblock"]["slug"] === 'lazyblock/reli-leitfragen-zum-download'):
                 ?>
                 <InnerBlocks allowedBlocks="['core/paragraph' ,'core/file','core/image','core/buttons',  'core/gallery',  'core/media-text']"
                          template="[ [ 'core/file' ] ]"
-                         prioritizedInserterBlocks="['core/paragraph' , 'core/image','core/gallery','core/file','core/cover']" />
+                         prioritizedInserterBlocks="['core/paragraph' ,'core/file']" />
                 <?php
 
             elseif($attributes["lazyblock"]["slug"] === 'lazyblock/reli-leitfragen-medium'):
                 ?>
                 <InnerBlocks allowedBlocks="['core/paragraph' ,'core/file','core/image','core/buttons',  'core/gallery',  'core/media-text']"
                          template="[ [ 'core/media-text' ],[ 'core/paragraph' ] ]"
-                         prioritizedInserterBlocks="['core/paragraph' , 'core/image','core/gallery','core/file','core/cover']" />
+                         prioritizedInserterBlocks="['core/paragraph' , 'core/image','core/gallery','core/cover']" />
                 <?php
 
             endif;
