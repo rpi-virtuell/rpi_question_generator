@@ -471,7 +471,7 @@ class RpiQuestionGenerator
             <InnerBlocks allowedBlocks="['core/paragraph' , 'core/video', 'core/verse', 'core/table', 'core/spacer'
                                     ,'core/separator', 'core/pullquote', 'core/media-text', 'core/list'
                                     ,'core/embed','core/image','core/heading','core/gallery','core/file','core/cover'
-                                    ,'core/buttons', 'core/audio', 'core/html']"
+                                    ,'core/buttons', 'core/audio', 'core/html', 'core/freeform']"
                          template="[  [ 'core/paragraph', { placeholder: 'Schreibe Text oder tippe / um Gestaltungselemente einzufügen...' } ] ]"
                          prioritizedInserterBlocks="['core/paragraph' , 'core/table', 'core/list', 'core/embed','core/heading']" />
             <?php
@@ -501,7 +501,7 @@ class RpiQuestionGenerator
 
             elseif($attributes["lazyblock"]["slug"] === 'lazyblock/reli-leitfragen-medium'):
                 ?>
-                <InnerBlocks allowedBlocks="['core/paragraph' ,'core/file','core/image','core/buttons',  'core/gallery',  'core/media-text']"
+                <InnerBlocks allowedBlocks="['core/paragraph' ,'core/file','core/image','core/buttons',  'core/gallery',  'core/media-text',  'core/list', 'core/video','core/embed', 'core/freeform', 'core/heading']"
                          template="[ [ 'core/media-text' ],[ 'core/paragraph' ] ]"
                          prioritizedInserterBlocks="['core/paragraph' , 'core/image','core/gallery','core/cover']" />
                 <?php
