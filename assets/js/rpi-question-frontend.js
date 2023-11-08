@@ -9,10 +9,17 @@ jQuery(document).ready(function ($){
         const str = html.replace(/(<([^>]+)>)/gi, "").trim();
         //if(!str)
         if(!str){
+            if(inner.children().length>0 && inner.children()[0].tagName == 'FIGURE' ) {
+                if($(inner.children()[0]).hasClass('wp-block-gallery')){
+                    return;
+                }
+
+            }
+
             if($('article.status-draft').length>0){
                 block.css({opacity:0.2});
             }else{
-                block.remove();
+               // block.remove();
             }
         }
     });

@@ -488,7 +488,7 @@ class RpiQuestionGenerator
             if($attributes["lazyblock"]["slug"] === 'lazyblock/reli-leitfragen-bilder'):
                 ?>
                 <InnerBlocks allowedBlocks="['core/paragraph' ,'core/file','core/image','core/buttons',  'core/gallery',  'core/media-text']"
-                         template="[ [ 'core/gallery' ], [ 'core/paragraph' ] ]"
+                         template="[ [ 'core/gallery' ] ]"
                          prioritizedInserterBlocks="['core/image','core/cover','core/gallery','core/paragraph']" />
                 <?php
 
@@ -615,8 +615,7 @@ class RpiQuestionGenerator
 
     public function frontend_callback($p)
     {
-
-
+           // var_dump($p);
 //        if (empty(trim(strip_tags($p['insertedblocks'],array('<img>',' <figure>')))))
 //            return;
         $svgSize = 40;
